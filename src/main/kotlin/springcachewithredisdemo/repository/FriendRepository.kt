@@ -21,13 +21,13 @@ class FriendRepository {
         Friend("33344455566", "Ana", 35)
     )
 
-    @Cacheable(value = ["friendsCache"])
+    @Cacheable(value = ["friendsCache"], sync = true)
     fun findAll(): List<Friend> {
         Thread.sleep(1000)
         return friends.map { Friend(computeFrontEndIdentifier(it.id), it.name, it.age) }
     }
 
-    @Cacheable(value = ["#id"])
+    @Cacheable(value = ["friendsCache"], key = "#id", sync = true)
     fun getById(id: String): Friend {
         Thread.sleep(1000)
         return friends.first { computeFrontEndIdentifier(it.id) == id }
